@@ -11,3 +11,17 @@ add_custom_target(
         COMMENT "Analyzing with MAQAO..."
 )
 
+
+add_custom_target(
+        lprof
+        COMMAND maqao lprof ${KERNEL}
+        COMMENT "Analyzing with MAQAO..."
+)
+
+# not working for now ...
+#add_custom_target(
+#        lprof_show
+#	COMMAND  maqao lprof -df xp=$(ls -td maqao_lprof_* | head -n 1)
+#        COMMENT "Analyzing with MAQAO..."
+#)
+
