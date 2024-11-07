@@ -12,7 +12,6 @@ add_executable(add src/main.cpp)
 
 # run simple perf profile
 
-
 # from 
 # https://www.brendangregg.com/perf.html
 add_custom_target(
@@ -41,7 +40,7 @@ add_custom_target(
         COMMENT "Profiling with perf..."
 )
 
-# get HW profiling infos
+# get SW profiling infos
 add_custom_target(
         perf_sw
 	COMMAND sudo perf stat -e ${PERF_STAT_SW} ./add
@@ -49,8 +48,7 @@ add_custom_target(
         COMMENT "Profiling with perf..."
 )
 
-
-# get HW profiling infos
+# get CACHE profiling infos
 add_custom_target(
         perf_cache
 	COMMAND sudo perf stat -e ${PERF_STAT_CACHE} ./add
@@ -58,16 +56,13 @@ add_custom_target(
         COMMENT "Profiling with perf..."
 )
 
-
-# get HW profiling infos
+# get SYSCALL profiling infos
 add_custom_target(
         perf_syscall
 	COMMAND sudo perf stat -e ${PERF_STAT_SYSCALL} ./add
         DEPENDS add
         COMMENT "Profiling with perf..."
 )
-
-
 
 # get complete profiling infos
 add_custom_target(
@@ -76,7 +71,6 @@ add_custom_target(
         DEPENDS add
         COMMENT "Profiling with perf..."
 )
-
 
 # Usage: perf list [<options>] [hw|sw|cache|tracepoint|pmu|sdt|metric|metricgroup|event_glob]
 
