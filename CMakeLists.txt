@@ -22,37 +22,64 @@ add_custom_target(
         COMMENT "Profiling with perf..."
 )
 
+set(PERF_STAT_HW "branches,branch-misses,bus-cycles,cache-misses,cache-references,cpu-cycles,instructions,ref-cycles")
 
-# run perf only in compute function
+set(PERF_STAT_SW "alignment-faults,context-switches,cpu-clock,cpu-migrations" )
+
+set(PERF_STAT_CACHE_L1 "L1-dcache-loads,L1-dcache-load-misses,L1-dcache-stores")
+set(PERF_STAT_CACHE_LLC "LLC-loads,LLC-load-misses,LLC-stores,LLC-store-misses")
+set(PERF_STAT_CACHE_BRANCH "branch-load,branch-load-misses")
+set(PERF_STAT_CACHE ${PERF_STAT_CACHE_L1},${PERF_STAT_CACHE_LLC},${PERF_STAT_CACHE_BRANCH})
+
+set(PERF_STAT_SYSCALL "raw_syscalls:sys_enter")
+
+# get HW profiling infos
 add_custom_target(
-	perf_compute
-	COMMAND perf record
-	DEPENDS add
-	COMMENT "Profiling with perf..."
+        perf_hw
+	COMMAND sudo perf stat -e ${PERF_STAT_HW} ./add
+        DEPENDS add
+        COMMENT "Profiling with perf..."
 )
 
-# get general profiling infos
+# get HW profiling infos
 add_custom_target(
-        perf_stat
-        COMMAND sudo perf stat -a ./add 
+        perf_sw
+	COMMAND sudo perf stat -e ${PERF_STAT_SW} ./add
         DEPENDS add
         COMMENT "Profiling with perf..."
 )
 
 
+# get HW profiling infos
+add_custom_target(
+        perf_cache
+	COMMAND sudo perf stat -e ${PERF_STAT_CACHE} ./add
+        DEPENDS add
+        COMMENT "Profiling with perf..."
+)
 
-set(PERF_GENERAL "cycles,instructions")
-set(PERF_CACHE "cache-references,cache-misses,bus-cycles")
-set(PERF_L1 "L1-dcache-loads,L1-dcache-load-misses,L1-dcache-stores")
-set(PERF_SYSCALL "raw_syscalls:sys_enter")
+
+# get HW profiling infos
+add_custom_target(
+        perf_syscall
+	COMMAND sudo perf stat -e ${PERF_STAT_SYSCALL} ./add
+        DEPENDS add
+        COMMENT "Profiling with perf..."
+)
+
+
 
 # get complete profiling infos
 add_custom_target(
         perf_complete
-	COMMAND sudo perf stat -e ${PERF_GENERAL},${PERF_CACHE},${PERF_L1},${PERF_SYSCALL} ./add
+	COMMAND sudo perf stat -e ${PERF_STAT_HW},${PERF_STAT_SW},${PERF_STAT_CACHE},${PERF_STAT_SYSCALL} ./add
         DEPENDS add
         COMMENT "Profiling with perf..."
 )
+
+
+# Usage: perf list [<options>] [hw|sw|cache|tracepoint|pmu|sdt|metric|metricgroup|event_glob]
+
 
 
 
