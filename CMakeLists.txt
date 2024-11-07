@@ -12,6 +12,11 @@ add_executable(add src/main.cpp)
 
 set(KERNEL "/home/sbstndbs/profiling_playgrounds/build/add")
 
+
+# perf scripts
 add_subdirectory(profilers/perf)
+
+# maqao scripts
+add_subdirectory(profilers/maqao)
 
 
