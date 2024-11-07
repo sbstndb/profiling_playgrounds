@@ -41,5 +41,22 @@ add_custom_target(
 
 
 
+set(PERF_GENERAL "cycles,instructions")
+set(PERF_CACHE "cache-references,cache-misses,bus-cycles")
+set(PERF_L1 "L1-dcache-loads,L1-dcache-load-misses,L1-dcache-stores")
+set(PERF_SYSCALL "raw_syscalls:sys_enter")
+
+# get complete profiling infos
+add_custom_target(
+        perf_complete
+	COMMAND sudo perf stat -e ${PERF_GENERAL},${PERF_CACHE},${PERF_L1},${PERF_SYSCALL} ./add
+        DEPENDS add
+        COMMENT "Profiling with perf..."
+)
+
+
+
+
+
 
 
